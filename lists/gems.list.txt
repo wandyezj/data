@@ -1,0 +1,53 @@
+diamond
+emerald
+ruby
+sapphire
+almandine
+amazonstone
+amblygonite
+amethyst
+aquamarine
+asparagus stone
+aventurine
+balas ruby
+beryl
+cat’s-eye
+chalcedony
+chrysoberyl
+citrine
+cymophane
+dravite
+fluorite
+garnet
+hessonite
+hyacinth
+jade
+jadeite
+jasper
+kyanite
+labradorite
+lapis lazuli
+malachite
+Matura diamond
+moonstone
+morganite
+opal
+peridot
+peristerite
+phenakite
+pyrope
+rock crystal
+rose quartz
+ruby spinel
+smoky quartz
+spessartine
+sunstone
+tigereye
+topaz
+turquoise
+variscite
+zircon
+amber
+coral
+ivory
+pearl
