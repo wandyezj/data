@@ -1,0 +1,20 @@
+{
+  "name": "scripts",
+  "version": "0.0.0",
+  "description": "scripts",
+  "main": "index.ts",
+  "scripts": {
+    "csv-to-json-elementlist": "./node_modules/.bin/ts-node ./src/csv-to-json.ts ../lists/elementlist.csv ../lists/element.list.json atomicNumber symbol name",
+    "csv-to-json-us-states-and-territories": "./node_modules/.bin/ts-node ./src/csv-to-json.ts ../lists/us-states-and-territories.csv ../lists/us-states-and-territories.json abbreviation name",
+    "csv-to-json-html-colors": "./node_modules/.bin/ts-node ./src/csv-to-json.ts ../lists/html-colors.csv ../lists/html-colors.json",
+    "test": "./node_modules/.bin/ts-node ./src/csv-to-json.ts"
+  },
+  "author": "wandyezj",
+  "license": "Unlicense",
+  "dependencies": {
+    "@types/node": "10.13.0",
+    "@wandyezj/standard-node": "0.0.5",
+    "ts-node": "^8.5.4",
+    "typescript": "^3.7.3"
+  }
+}
