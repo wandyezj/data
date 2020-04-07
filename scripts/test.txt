@@ -1,0 +1,82 @@
+
+> scripts@0.0.0 test R:\data\scripts
+> ts-node ./src/csv-to-json.ts
+
+CSV To JSON
+
+
+Test: [w,w,w]
+i[w,w,w] e[w w w] a[w w w] pass: true
+
+
+Test: ["w"]
+i0 "0 ,-1 "<,:true
+slice: 1 2
+slice w
+[ 'w' ]
+e-1
+i["w"] e[w] a[w] pass: true
+
+
+Test: ["w",w]
+i0 "0 ,3 "<,:true
+slice: 1 2
+slice w
+[ 'w' ]
+e3
+i3 "-1 ,3 "<,:false
+slice: 3 3
+slice 
+[ 'w', '' ]
+e3
+no progress
+i["w",w] e[w w] a[w ] pass: false
+
+
+Test: [w,"w"]
+i0 "2 ,1 "<,:false
+slice: 0 1
+slice w
+[ 'w' ]
+e1
+i1 "2 ,1 "<,:false
+slice: 1 1
+slice 
+[ 'w', '' ]
+e1
+no progress
+i[w,"w"] e[w w] a[w ] pass: false
+
+
+Test: [w,"w",w]
+i0 "2 ,1 "<,:false
+slice: 0 1
+slice w
+[ 'w' ]
+e1
+i1 "2 ,1 "<,:false
+slice: 1 1
+slice 
+[ 'w', '' ]
+e1
+no progress
+i[w,"w",w] e[w w w] a[w ] pass: false
+
+
+Test: [,,,]
+i[,,,] e[   ] a[   ] pass: true
+[]
+
+input: 
+
+undefined
+
+output:
+
+undefined
+
+items:
+
+
+
+missing arguments
