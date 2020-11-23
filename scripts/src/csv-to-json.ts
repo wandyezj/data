@@ -1,7 +1,6 @@
 import * as process from "process";
-import * as standard from "@wandyezj/standard-node";
+import {writeFileJson, capitalize, readFileList, camelCase} from "@wandyezj/standard-node";
 import * as path from "path";
-import { capitalize } from "@wandyezj/standard-node/dist/lib/string";
 
 console.log("CSV To JSON");
 
@@ -146,7 +145,7 @@ function testSplitCsvToLine() {
 testSplitCsvToLine();
 
 function readCsv(path: string): string[][] {
-    const lines = standard.file.readList(path);
+    const lines = readFileList(path);
 
     const csvLines = lines.map((line) => {
         return splitCsvLine(line);
@@ -173,7 +172,7 @@ export function csvToJson(data: string[][], items?: string[]): {} {
 
     const labels = items && items.length > 0 ? items : data.shift();
 
-    const names = labels.map((name) => name ? standard.string.camelCase(joinWords(name)) : name);
+    const names = labels.map((name) => name ? camelCase(joinWords(name)) : name);
 
     const json = data.map((values) => {
         const o = {};
@@ -234,7 +233,7 @@ if (inputFileCsv && outputFileJson) {
     
     const json = csvToJson(data, items);
     
-    standard.file.writeJson(outputFilePathJson, json);
+    writeFileJson(outputFilePathJson, json);
 } else {
     console.log("missing arguments");
 }

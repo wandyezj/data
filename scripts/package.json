@@ -7,13 +7,13 @@
     "csv-to-json-elementlist": "./node_modules/.bin/ts-node ./src/csv-to-json.ts ../lists/elementlist.csv ../lists/element.list.json atomicNumber symbol name",
     "csv-to-json-us-states-and-territories": "./node_modules/.bin/ts-node ./src/csv-to-json.ts ../lists/us-states-and-territories.csv ../lists/us-states-and-territories.json abbreviation name",
     "csv-to-json-html-colors": "./node_modules/.bin/ts-node ./src/csv-to-json.ts ../lists/html-colors.csv ../lists/html-colors.json",
+    "json-to-list-html-colors": "./node_modules/.bin/ts-node ./src/json-to-list.ts ../lists/html-colors.json ../lists/html-colors.list.txt name",
     "test": "./node_modules/.bin/ts-node ./src/csv-to-json.ts"
   },
   "author": "wandyezj",
   "license": "Unlicense",
   "dependencies": {
-    "@types/node": "10.13.0",
-    "@wandyezj/standard-node": "0.0.5",
+    "@wandyezj/standard-node": "0.0.6",
     "ts-node": "^8.5.4",
     "typescript": "^3.7.3"
   }
