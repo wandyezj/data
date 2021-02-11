@@ -6,6 +6,8 @@ Text Data Lists
 
 - lists
     - contains files exclusively in the list format
+- original
+    - contains original data in a nice format
 
 ## Formats
 

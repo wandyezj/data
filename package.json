@@ -8,13 +8,20 @@
     "csv-to-json-us-states-and-territories": "./node_modules/.bin/ts-node ./src/csv-to-json.ts ../lists/us-states-and-territories.csv ../lists/us-states-and-territories.json abbreviation name",
     "csv-to-json-html-colors": "./node_modules/.bin/ts-node ./src/csv-to-json.ts ../lists/html-colors.csv ../lists/html-colors.json",
     "json-to-list-html-colors": "./node_modules/.bin/ts-node ./src/json-to-list.ts ../lists/html-colors.json ../lists/html-colors.list.txt name",
-    "test": "./node_modules/.bin/ts-node ./src/csv-to-json.ts"
+    "test": "./node_modules/.bin/ts-node ./src/csv-to-json.ts",
+    "start": "./node_modules/.bin/ts-node ./src/index.ts"
   },
   "author": "wandyezj",
   "license": "Unlicense",
   "dependencies": {
+    "@types/jsdom": "^16.2.6",
     "@wandyezj/standard-node": "0.0.6",
     "ts-node": "^8.5.4",
     "typescript": "^3.7.3"
+  },
+  "devDependencies": {
+    "@types/node": "^14.14.25",
+    "jsdom": "^16.4.0",
+    "node-fetch": "^2.6.1"
   }
 }
