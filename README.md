@@ -1,6 +1,11 @@
-# data
+# readme
 
- Text Data Lists
+Text Data Lists
+
+## Directories
+
+- lists
+    - contains files exclusively in the list format
 
 ## Formats
 
@@ -13,7 +18,10 @@ Formats are based on file extensions
 
 ### .csv
 
-    CSV list or correlated objects
+    CSV list of correlated values
+
+### .tsv
+    TSV list of correlated values
 
 ### .list.txt
 
