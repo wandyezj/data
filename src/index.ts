@@ -7,17 +7,18 @@ import fetch from "node-fetch";
 // Very convenient
 import {JSDOM} from "jsdom";
 
-async function getWikipediaAnimalData() {
+async function getWikipediaAnimalData(cacheDirectory: string) {
+
 
     // cache file locally so to not place additional load on the website
     const url = "https://en.wikipedia.org/wiki/List_of_animal_names";
     const file = "wikipedia_list_of_animal_names.html";
-    const temp = path.join(__dirname, "..", "temp");
-    if (!existsSync(temp)) {
-        mkdirSync(temp, {recursive:true})
+    
+    if (!existsSync(cacheDirectory)) {
+        mkdirSync(cacheDirectory, {recursive:true})
     }
 
-    const filePath = path.join(temp, file);
+    const filePath = path.join(cacheDirectory, file);
 
     // check if file is already cached
     if (!existsSync(filePath)) {
@@ -49,8 +50,56 @@ async function getWikipediaAnimalData() {
 
 // }
 
+interface TableData {
+    header: HTMLTableHeaderCellElement[];
+    rows: HTMLTableDataCellElement[][];
+}
+
+
+
+function iterateOverElements<T>(items: {readonly length: number; [index: number]: T; }, callback: (item: T, isFirst: boolean)=> void): void {
+    for (let i = 0; i< items.length; i++ ){
+        const item = items[i];
+        const isFirst = i ===0;
+        callback(item, isFirst);
+    }
+}
+
+function parseHtmlTable(table: HTMLTableElement): TableData {
+
+    const header: HTMLTableHeaderCellElement[] =[];
+    const rows: HTMLTableDataCellElement[][] = [];
+
+    const trs = table.getElementsByTagName("tr");
+
+    iterateOverElements(trs, (tr, isFirst) =>{
+        const tds = tr.getElementsByTagName("td");
+        // check first row for presence of th elements
+        if (isFirst && tds.length === 0) {
+            const ths = tr.getElementsByTagName("th");
+            iterateOverElements(ths, (th) => {
+                header.push(th)
+            });
+        } else {
+            const row: HTMLTableDataCellElement[]  = [];
+            iterateOverElements(tds, (td) => {
+                row.push(td)
+            });
+            rows.push(row)
+        }
+    });
+
+    const tableData: TableData = {
+        header,
+        rows,
+    };
+    return tableData;
+}
+
 async function run() {
-    const data = await getWikipediaAnimalData()
+    const cacheDirectory = path.join(__dirname, "..", "temp");
+
+    const data = await getWikipediaAnimalData(cacheDirectory)
     const s = data.substring(0,20);
     console.log(s);
     //document.body.innerHTML = "<body><h1>hello</h1></body>"
@@ -61,8 +110,18 @@ async function run() {
     const dom = new JSDOM(data);
     const body = dom.window.document.body;
     const tables = body.getElementsByTagName("table");
-    const inner = tables[0].innerHTML
-    console.log(inner);
+    const table = tables[1];
+    //const inner = table.innerHTML
+    const tableData = parseHtmlTable(table);
+    const inner = tableData.header.map(x => x.innerHTML).join("\n")
+    +"\n\n\n"+
+     tableData.rows.map(x =>x.map(x => x.innerHTML).join("\n")).join("\n\n\n")
+
+    // note wikipedia animal list data is noisy, some categories have multiple
+    //console.log("------")
+    //console.log(inner);
+    writeFileSync(path.join(cacheDirectory, "out.txt"), inner);
+    //console.log("------")
     console.log("done")
 }
 
