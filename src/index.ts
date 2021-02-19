@@ -7,18 +7,20 @@ import fetch from "node-fetch";
 // Very convenient
 import {JSDOM} from "jsdom";
 
-async function getWikipediaAnimalData(cacheDirectory: string) {
-
-
+/**
+ * 
+ * @param cacheDirectory 
+ * @param name name of the file in the cache
+ * @param url url to downloads
+ */
+async function getUrlData(cacheDirectory: string, name: string, url: string) {
     // cache file locally so to not place additional load on the website
-    const url = "https://en.wikipedia.org/wiki/List_of_animal_names";
-    const file = "wikipedia_list_of_animal_names.html";
-    
+
     if (!existsSync(cacheDirectory)) {
         mkdirSync(cacheDirectory, {recursive:true})
     }
 
-    const filePath = path.join(cacheDirectory, file);
+    const filePath = path.join(cacheDirectory, name);
 
     // check if file is already cached
     if (!existsSync(filePath)) {
@@ -98,8 +100,10 @@ function parseHtmlTable(table: HTMLTableElement): TableData {
 
 async function run() {
     const cacheDirectory = path.join(__dirname, "..", "temp");
+    const url = "https://en.wikipedia.org/wiki/List_of_animal_names";
+    const file = "wikipedia_list_of_animal_names.html";
 
-    const data = await getWikipediaAnimalData(cacheDirectory)
+    const data = await getUrlData(cacheDirectory, file, url)
     const s = data.substring(0,20);
     console.log(s);
     //document.body.innerHTML = "<body><h1>hello</h1></body>"
@@ -122,6 +126,19 @@ async function run() {
     //console.log(inner);
     writeFileSync(path.join(cacheDirectory, "out.txt"), inner);
     //console.log("------")
+
+    // really want to denest the a tags and just get the text.
+    const headers = tableData.header.map(h => {
+        const a = h.getElementsByTagName("a");
+        if (a.length === 0) {
+            return h.innerHTML;
+        }
+        return a[0].innerHTML;
+    }).join("\n")
+
+    const parsed = headers
+    writeFileSync(path.join(cacheDirectory, "out2.txt"), parsed);
+
     console.log("done")
 }
 
