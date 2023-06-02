@@ -8,6 +8,8 @@ Text Data Lists
     - contains files exclusively in the list format
 - original
     - contains original data in a nice format
+- raw
+    - contains raw data with parsers
 
 ## Formats
 
