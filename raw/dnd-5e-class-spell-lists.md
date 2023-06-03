@@ -131,8 +131,7 @@ True Seeing
 Etherealness
 Forcecage
 Mirage Arcane
-Mordenkainen’s
-Magnificent Mansion
+Mordenkainen’s Magnificent Mansion
 Mordenkainen’s Sword
 Project Image
 Regenerate
@@ -971,10 +970,8 @@ Hallucinatory Terrain
 Ice Storm
 Leomund’s Secret Chest
 Locate Creature
-Mordenkainen’s
-Faithful Hound
-Mordenkainen’s
-Private Sanctum
+Mordenkainen’s Faithful Hound
+Mordenkainen’s Private Sanctum
 Otiluke’s Resilient Sphere
 Phantasmal Killer
 Polymorph
