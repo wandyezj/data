@@ -20,6 +20,17 @@ const validSpellLevels = [
     "9th Level",
 ];
 
+const validClassNames = [
+    "Bard",
+    "Cleric",
+    "Druid",
+    "Paladin",
+    "Ranger",
+    "Sorcerer",
+    "Warlock",
+    "Wizard",
+];
+
 // Go through each line keep track of the current class
 let currentClass = "";
 let currentLevel = "";
@@ -31,8 +42,18 @@ let currentLevel = "";
 const classSpellsMap = new Map();
 
 /**
+ * class -> level
+ * @typedef {{[className: string]: number}} ClassLevel
+ */
+
+/**
  * spell -> class -> level
- * @type {{[spell: string]: {[className: string]: number}}
+ * @typedef {{[spell: string]: ClassLevel}} SpellClassLevel
+ */
+
+/**
+ * All spell class levels parsed from spells list markdown
+ * @type {SpellClassLevel}
  */
 const spellClassLevels = {};
 
@@ -41,7 +62,16 @@ for (const line of lines) {
         if (!line.endsWith(" Spells")) {
             console.log(`Unexpected line: ${line}`);
         }
-        currentClass = line.substring(2).trim().split(" ")[0];
+        const className = line.substring(2).trim().split(" ")[0];
+        if (validClassNames.includes(className)) {
+            currentClass = className;
+        } else {
+            console.log(`Unexpected line (Invalid Class Name): ${line}`);
+            currentClass = "";
+        }
+    }
+    else if (currentClass === "") {
+        // skip
     } else if (line.startsWith("### ")) {
         if (!(line.endsWith(" Level") || line.endsWith(" Level)"))) {
             console.log(`Unexpected line: ${line}`);
@@ -51,9 +81,9 @@ for (const line of lines) {
             currentLevel = spellLevel;
         } else {
             console.log(`Unexpected line (Invalid Spell Level): ${line}`);
+            currentLevel = "";
         }
-        
-    } else if (currentClass === "" || currentLevel === "") {
+    } else if (currentLevel === "") {
         // skip
     } else {
         const spell = line.trim();
@@ -77,45 +107,114 @@ for (const line of lines) {
     }
 }
 
-// Manual checking
-//console.log(classSpellsMap);
-
-console.log("\nClasses:");
-const levels = [];
-for (let className of classSpellsMap.keys()) {
-    console.log(className);
-    const classSpellLevels = Array.from(classSpellsMap.get(className).keys());
-    levels.push(...classSpellLevels);
+/**
+ *
+ * @param {SpellClassLevel} spellClassLevels
+ */
+function getUniqueClassNames(spellClassLevels) {
+    const classNames = [];
+    Object.getOwnPropertyNames(spellClassLevels).forEach((spell) => {
+        const classes = Object.getOwnPropertyNames(spellClassLevels[spell]);
+        classNames.push(...classes);
+    });
+    const uniqueClassNames = [...new Set(classNames)];
+    return uniqueClassNames;
 }
 
-// remove duplicates
-const uniqueLevels = [...new Set(levels)];
-console.log("\nLevels:");
-console.log(uniqueLevels.join("\n"));
+/**
+ *
+ * @param {ClassLevel} classLevel
+ * @returns {number[]} unique levels
+ */
+function getUniqueLevels(classLevel) {
+    const levels = Object.getOwnPropertyNames(classLevel).map(
+        (className) => classLevel[className]
+    );
+    const uniqueLevels = [...new Set(levels)];
+    return uniqueLevels;
+}
 
-console.log("\nSpells:");
-console.log(spellClassLevels);
+/**
+ * Are there any cases of a spell having different spell levels for different classes?
+ * @param {SpellClassLevel} spellClassLevels
+ * @returns {string[]} spells with different class levels
+ */
+function spellsNamesWithDifferentClassLevels(spellClassLevels) {
+    const differentSpells = [];
+    for (const spell of Object.getOwnPropertyNames(spellClassLevels)) {
+        const classLevels = spellClassLevels[spell];
+        const uniqueLevels = getUniqueLevels(classLevels);
+        if (uniqueLevels.length > 1) {
+            console.error(
+                `ERROR: Spell ${spell} has different levels for different classes: ${JSON.stringify(
+                    classLevels
+                )}`
+            );
+            differentSpells.push(spell);
+        }
+    }
+    return differentSpells;
+}
+const spellsWithDifferentLevels =
+    spellsNamesWithDifferentClassLevels(spellClassLevels);
+if (spellsWithDifferentLevels.length > 0) {
+    console.error(
+        "ERROR: spells exist with different levels for different classes"
+    );
+}
 
-// Are there any cases of a spell having different spell levels for different classes?
-// const allSpells = Object.keys(spellClassLevels);
-// const spellsWithDifferentLevels = allSpells.filter((spell) => {
-//     const spellClassLevelMap = spellClassLevels[spell];
-//     const spellClassLevels = Object.values(spellClassLevelMap);
-//     const uniqueSpellClassLevels = [...new Set(spellClassLevels)];
-//     return uniqueSpellClassLevels.length > 1;
-// });
+/**
+ * All spell names in alphabetical order
+ */
+const spellNames = Object.getOwnPropertyNames(spellClassLevels);
+spellNames.sort();
 
-// const allSpellNames = [];
-// for (let className of classSpellsMap.keys()) {
-//     const classSpellLevels = classSpellsMap.get(className);
-//     for (let level of classSpellLevels.keys()) {
-//         const spells = classSpellLevels.get(level);
-//         allSpellNames.push(...spells);
-//     }
-// }
+/**
+ * Information about the spell
+ * @type {{name: string; level:string; classes: string[]}[]}
+ */
+const spellList = spellNames.map((name) => {
+    const classLevels = spellClassLevels[name];
+    const uniqueLevels = getUniqueLevels(classLevels);
+    if (uniqueLevels.length > 1) {
+        console.log(
+            `ERROR: Spell ${name} has different levels for different classes`
+        );
+    }
 
-// const uniqueSpellNames = [...new Set(allSpellNames)];
+    const level = uniqueLevels[0];
+    const classes = Object.getOwnPropertyNames(classLevels);
+    classes.sort();
+    return {
+        name,
+        level,
+        classes,
+    };
+});
 
-// Break into one list per class
+//console.log(spellList);
 
-// spell, class level ...
+//
+// output JSON
+//
+
+fs.writeFileSync("dnd-5e-class-spell-list.json", JSON.stringify(spellList));
+
+//
+// output TSV
+//
+const spellTsv = spellList
+    .map(
+        ({ name, level, classes }) => `${name}\t${level}\t${classes.join(" ")}`
+    )
+    .join("\n");
+
+fs.writeFileSync("dnd-5e-class-spell-lists.tsv", spellTsv);
+
+//
+// Unique Class Names
+//
+
+// const names = getUniqueClassNames(spellClassLevels);
+// names.sort();
+// console.log(names.join(", "));
