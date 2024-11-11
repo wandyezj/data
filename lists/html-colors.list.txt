@@ -21,7 +21,7 @@ Orange
 Yellow
 LightYellow
 LemonChiffon
-LightGoldenrodYellow 
+LightGoldenrodYellow
 PapayaWhip
 Moccasin
 PeachPuff
@@ -56,7 +56,7 @@ LawnGreen
 Chartreuse
 GreenYellow
 SpringGreen
-MediumSpringGreen 
+MediumSpringGreen
 LightGreen
 PaleGreen
 DarkSeaGreen
@@ -93,7 +93,7 @@ MediumBlue
 DarkBlue
 Navy
 MidnightBlue
- violet
+Violet
 White
 Snow
 Honeydew

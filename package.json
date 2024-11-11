@@ -4,12 +4,12 @@
   "description": "scripts",
   "main": "index.ts",
   "scripts": {
-    "csv-to-json-elementlist": "./node_modules/.bin/ts-node ./src/csv-to-json.ts ../lists/elementlist.csv ../lists/element.list.json atomicNumber symbol name",
-    "csv-to-json-us-states-and-territories": "./node_modules/.bin/ts-node ./src/csv-to-json.ts ../lists/us-states-and-territories.csv ../lists/us-states-and-territories.json abbreviation name",
-    "csv-to-json-html-colors": "./node_modules/.bin/ts-node ./src/csv-to-json.ts ../lists/html-colors.csv ../lists/html-colors.json",
-    "json-to-list-html-colors": "./node_modules/.bin/ts-node ./src/json-to-list.ts ../lists/html-colors.json ../lists/html-colors.list.txt name",
-    "test": "./node_modules/.bin/ts-node ./src/csv-to-json.ts",
-    "start": "./node_modules/.bin/ts-node ./src/index.ts"
+    "csv-to-json-elementlist": "ts-node ./src/csv-to-json.ts ./original/elementlist.csv ./lists/element.list.json atomicNumber symbol name",
+    "csv-to-json-us-states-and-territories": "ts-node ./src/csv-to-json.ts ./original/us-states-and-territories.csv ./original/us-states-and-territories.json abbreviation name",
+    "csv-to-json-html-colors": "ts-node ./src/csv-to-json.ts ./original/html-colors.csv ./original/html-colors.json",
+    "json-to-list-html-colors": "ts-node ./src/json-to-list.ts ./original/html-colors.json ./lists/html-colors.list.txt name",
+    "test": "ts-node ./src/csv-to-json.ts",
+    "start": "ts-node ./src/index.ts"
   },
   "author": "wandyezj",
   "license": "Unlicense",
